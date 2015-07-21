@@ -9,9 +9,11 @@ MAINTAINER Nick Poorman <mail@nickpoorman.com>
 RUN find / -name \*mesos\* | perl -ne 'print if !/mesos(.*)\.(so|la|jar)/' | xargs rm -rf
 
 # Download the pre-built package
-RUN mkdir -p /job-server && \
-    cd /job-server && \
-    wget -qO- https://github.com/nextglass/spark-jobserver/raw/jobserver-0.5.1-BUILD-4.28.2015/dist/job-server.tar.gz | tar xz
+RUN cd / && \
+    wget -qO- https://github.com/spark-jobserver/spark-jobserver/archive/v0.5.1.tar.gz | tar xz && \
+    mv spark-jobserver-0.5.1 job-server && \
+    cd job-server && \
+    export VER=`sbt version | tail -1 | cut -f2`
 
 ADD run.sh /job-server/
 
